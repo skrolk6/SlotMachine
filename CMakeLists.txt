@@ -4,6 +4,7 @@ project(${PROJECT_NAME})
 set(SFML_DIR "${CMAKE_CURRENT_LIST_DIR}/libs/SFML-2.5.1/lib/cmake/SFML")
 file(GLOB ALL_REQUIRED_DLL "libs/required_dlls/*.dll")
 file(COPY ${ALL_REQUIRED_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY "data" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 link_libraries(stdc++fs) #link the filesystem
 file(GLOB_RECURSE SCRF "src/*.cpp" "src/*.hpp")
