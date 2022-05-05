@@ -16,9 +16,6 @@ int Wait::handleState(sf::RenderWindow& window, Button& startbtn, Button& stopbt
                     startbtn.deactivate();
                     return 1;
                 }
-                if (stopbtn.select(mouse)) {
-                    return 2;
-                }
             }
         }
     }

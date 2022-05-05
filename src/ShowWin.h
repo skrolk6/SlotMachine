@@ -1,13 +1,17 @@
 #pragma once
 #include "State.h"
+#include "math.h"
 
-class StopSpin : public State {
+class ShowWin : public State {
 public:
-	StopSpin(float minVel);
+	ShowWin(std::vector<Reel>* reels, int winPlace);
 	virtual void handleSpins(std::vector<Reel>* reels, float& velocity, float& offset, float time) override;
 	virtual int handleState(sf::RenderWindow& window, Button& startbtn, Button& stopbtn, float& velocity, sf::Clock& spinClock) override;
-	int getWinNum() { return this->winPlace; }
+
 private:
-	float minVel;
+	std::vector<Reel>* ptrReels;
+	int winNum;
 	int winPlace;
+	float factorS;
+	float factorR;
 };

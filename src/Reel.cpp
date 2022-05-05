@@ -13,6 +13,9 @@ Reel::Reel(bool direct, float x, float y) :
 		symlist.emplace_back(sym);
 	}
 	setDirection(direct);
+	for (auto& i : symlist) {
+		i.rect.setTexture(allSymbols[i.id], true);
+	}
 	mainRect.setSize(sf::Vector2f(200, 600));
 	mainRect.setFillColor(sf::Color::White);
 }
@@ -32,10 +35,51 @@ void Reel::drawSymbols(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform.translate(0, offset * direction + initPos);
 
 	for (auto& i : symlist) {
-		sf::Sprite rect = i.rect;
-		rect.setTexture(allSymbols[i.id]);
-		target.draw(rect, states);
+		target.draw(i.rect, states);
 	}
+}
+
+void Reel::scale(int num, float factor)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+	it->rect.scale(factor, factor);
+}
+
+void Reel::rotate(int num, float factor)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+	it->rect.rotate(factor);
+}
+
+void Reel::resetRotation(int num)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+	it->rect.setRotation(0.f);
+}
+
+void Reel::resetScale(int num)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+	it->rect.setScale(1.f, 1.f);
+}
+
+float Reel::getScale(int num)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+	return it->rect.getScale().x;
+}
+
+int Reel::getSymbolID(int num)
+{
+	std::list<Symbol>::iterator it = symlist.begin();
+	std::advance(it, num);
+
+	return it->id;
 }
 
 void Reel::resetPosition() {
@@ -44,8 +88,10 @@ void Reel::resetPosition() {
 		i.rect.move(0, offset * direction);
 	}
 	Symbol sym;
-	sym.rect.setPosition(0, 0);
+	sym.rect.setOrigin(100, 100);
+	sym.rect.setPosition(100, 100);
 	sym.id = std::rand() % 4;
+	sym.rect.setTexture(allSymbols[sym.id], true);
 	symlist.emplace_front(sym);
 }
 
@@ -54,18 +100,20 @@ void Reel::setDirection(bool direct)
 	if (direct == 0) {
 		direction = -1;
 		initPos = 615;
-		int cnt = 0;
+		float cnt = 0;
 		for (auto& i : symlist) {
-			i.rect.setPosition(0, cnt * 200 * -1);
+			i.rect.setOrigin(100, 100);
+			i.rect.setPosition(100, 100 + cnt * 200 * -1);
 			++cnt;
 		}
 	}
 	else {
 		direction = 1;
 		initPos = -185;
-		int cnt = 0;
+		float cnt = 0;
 		for (auto& i : symlist) {
-			i.rect.setPosition(0, cnt * 200);
+			i.rect.setOrigin(100, 100);
+			i.rect.setPosition(100, 100 +  cnt * 200);
 			++cnt;
 		}
 	}
@@ -76,11 +124,18 @@ void Reel::setTextures()
 	for (int i = 1; i < 5; ++i) {
 		sf::Image image;
 		sf::Texture texture;
-		std::string name("../SlotMachine/symbols/sym");
+		std::string name("data/symbols/sym");
 		name += std::to_string(i);
 		name += ".png";
-		image.loadFromFile(name);
+		try {
+			if (!image.loadFromFile(name)) throw std::runtime_error("Failed to load image!");
+		}
+		catch (std::runtime_error & e) {
+			std::cout << e.what();
+			return;
+		}
 		texture.loadFromImage(image);
+		texture.setSmooth(true);
 		allSymbols.emplace_back(texture);
 	}
 }

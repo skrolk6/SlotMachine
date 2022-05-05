@@ -1,5 +1,10 @@
 #include "Spin.h"
 
+Spin::Spin(float spinTime) :
+    spinTime (spinTime)
+{
+}
+
 void Spin::handleSpins(std::vector<Reel>* reels, float& velocity, float& offset, float time)
 {
     offset += velocity * time;
@@ -19,7 +24,8 @@ int Spin::handleState(sf::RenderWindow& window, Button& startbtn, Button& stopbt
 {
     float time = spinClock.getElapsedTime().asSeconds();
     if (time >= spinTime) {
-        return 2;
+        stopbtn.deactivate();
+        return 3;
     }
     sf::Event event;
     while (window.pollEvent(event))
@@ -33,10 +39,11 @@ int Spin::handleState(sf::RenderWindow& window, Button& startbtn, Button& stopbt
                 sf::Vector2i mouse = sf::Mouse::getPosition(window);
 
                 if (stopbtn.select(mouse)) {
-                    return 2;
+                    stopbtn.deactivate();
+                    return 3;
                 }
             }
         }
     }
-    return 3;
+    return 2;
 }

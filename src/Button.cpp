@@ -8,7 +8,12 @@ Button::Button(double x, double y, double width, double height, std::string text
 	text(text),
 	isActivated(true)
 {
-	bool isf = font.loadFromFile("../SlotMachine/fonts/Bighaustitul extrabold.ttf");
+	try {
+		if (!font.loadFromFile("data/fonts/Bighaustitul extrabold.ttf")) throw std::runtime_error("Failed to load fonts!");
+	}
+	catch (std::runtime_error & e) {
+		std::cout << e.what();
+	}
 
 	txt.setFont(font);
 	txt.setCharacterSize(35);
@@ -26,7 +31,7 @@ Button::Button(double x, double y, double width, double height, std::string text
 bool Button::select(sf::Vector2i mouse)
 {
 	if (!isActivated) { return false; }
-	if ((mouse.x > x && mouse.x < x + width) && (mouse.y > y && mouse.y < y + height)) {
+	if ((mouse.x > box.getPosition().x && mouse.x < box.getPosition().x + box.getSize().x) && (mouse.y > box.getPosition().y && mouse.y < box.getPosition().y + box.getSize().y)) {
 		return  true;
 	}
 	else {

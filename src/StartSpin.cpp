@@ -1,5 +1,10 @@
 #include "StartSpin.h"
 
+StartSpin::StartSpin(float maxVel):
+    maxVel(maxVel)
+{
+}
+
 void StartSpin::handleSpins(std::vector<Reel>* reels, float& velocity, float& offset, float time)
 {
     if (velocity < maxVel) {
@@ -22,7 +27,8 @@ int StartSpin::handleState(sf::RenderWindow& window, Button& startbtn, Button& s
 {
     if (velocity >= maxVel) {
         velocity = maxVel;
-        return 3;
+        stopbtn.activate();
+        return 2;
     }
     return 1;
 }

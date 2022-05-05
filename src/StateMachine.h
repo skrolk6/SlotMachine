@@ -3,6 +3,7 @@
 #include "StopSpin.h"
 #include "Wait.h"
 #include "Spin.h"
+#include "ShowWin.h"
 #include "Reel.h"
 
 class StateMachine {
@@ -17,11 +18,9 @@ private :
 	std::vector<Reel> reels;
 	sf::Clock spinClock;
 	float spinTime;
-	State* curstate;
-	StartSpin start;
-	StopSpin stop;
-	Wait wait;
-	Spin spin;
+	std::unique_ptr<State> ptrState;
+	int curState;
+	int winPlace;
 	float velocity;
 	float minVel;
 	float maxVel;

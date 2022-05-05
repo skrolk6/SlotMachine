@@ -1,12 +1,25 @@
 #include "StopSpin.h"
 
+StopSpin::StopSpin(float minVel):
+    minVel(minVel),
+    winPlace(0)
+{
+}
+
 void StopSpin::handleSpins(std::vector<Reel>* reels, float& velocity, float& offset, float time)
 {
     if (velocity > minVel) {
         velocity -= 0.0005f;
     }
-    else if(offset == 200.f || offset == 0.f){
-        velocity = 0.f;
+    else { 
+        if (offset - 100.f < 0 && velocity > 0) {
+            velocity *= -1.f;
+        }
+        if (roundf(offset) == 200.f || roundf(offset) == 0.f) {
+            velocity > 0 ? winPlace = 1 : winPlace = 2;
+            velocity = 0.f;
+            return;
+        }
     }
     offset += velocity * time;
     for (int i = 0; i < reels->size(); ++i) {
@@ -25,7 +38,8 @@ int StopSpin::handleState(sf::RenderWindow& window, Button& startbtn, Button& st
 {
     if (velocity == 0.f) {
         startbtn.activate();
-        return 0;
+        stopbtn.deactivate();
+        return 4;
     }
-    return 2;
+    return 3;
 }

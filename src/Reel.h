@@ -33,5 +33,12 @@ private:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void drawSymbols(sf::RenderTarget& target, sf::RenderStates states) const;
- 
+
+public:
+	void scale(int num, float factor);
+	void rotate(int num, float factor);
+	void resetRotation(int num);
+	void resetScale(int num);
+	float getScale(int num);
+	int getSymbolID(int num);
 };
