@@ -6,4 +6,4 @@ To build:
 
 I used -G "MinGW Makefiles", mingw version 5.4.2
   
-2. make -C *path to directory*
+2. make -C *path to build*
