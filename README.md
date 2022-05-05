@@ -1,9 +1,10 @@
 # SlotMachine
 
 To build:
+1. Go to directory of this repository
 
-1. cmake -S *path to directory* -B *path to build* -G "*Your runtime environment*" 
+2. cmake . -G "*Your runtime environment*" 
 
 I used -G "MinGW Makefiles", mingw version 5.4.2
   
-2. make -C *path to build*
+3. make
